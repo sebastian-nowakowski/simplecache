@@ -41,10 +41,7 @@ public class CacheController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> List(){
         var data = await Task.Run(
-                            () => _cache.GetAll()
-                                        .Select(i =>
-                                            new { Key = i.key, Value = i.value })
-                                        .ToList());
+                            () => _cache.GetAll().ToDictionary(i => i.key, i => i.value));
         return Ok(data);
     }
 

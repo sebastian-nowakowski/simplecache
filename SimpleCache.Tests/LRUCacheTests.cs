@@ -1,32 +1,16 @@
 namespace SimpleCache.Tests;
 using SimpleCache.Core;
 
-public class LRUCacheTests
+public class LRUCacheTests: BaseCacheTest
 {
-    const int maxVolume = 10;
-    ILRUCache<string, string> _cache;
-    public LRUCacheTests(){
-        _cache = new LRUCache<string, string>(maxVolume);
-    }
-
-    public static IEnumerable<object[]> CacheValues() {
-        yield return new object[] {
-            new List<(string key, string value)>(){
-                (key: "actor", value: "daniel craig"),
-                (key: "singer", value: "bruce dickinson"),
-                (key: "comedian", value: "john cleese"),
-                (key: "actress", value: "emily blunt"),
-                (key: "monster", value: "nessie"),
-                (key: "fellowship", value: "frodo, sam, merry, pippin!")
-            }
-        };
+    public LRUCacheTests() : base(){
     }
 
     [Theory]
     [MemberData(nameof(CacheValues))]
     public void PopulateTest(List<(string key, string value)> data)
     {
-        data.ForEach(i => _cache.AddOrUpdate(i.key, i.value));
+        FillCache(data);
         Assert.Equal(data.Count(), _cache.Count);
         Assert.Equal(data.Last(), _cache.Head);
         Assert.Equal(data.First(), _cache.Tail);
@@ -35,7 +19,7 @@ public class LRUCacheTests
     [Theory]
     [MemberData(nameof(CacheValues))]
     public void AddNewTest(List<(string key, string value)> data){
-        data.ForEach(i => _cache.AddOrUpdate(i.key, i.value));
+        FillCache(data);
         _cache.AddOrUpdate("queen", "freedie mercury");
         Assert.Equal(data.Count() + 1, _cache.Count);
         Assert.Equal("queen", _cache.Head?.key);
@@ -44,7 +28,7 @@ public class LRUCacheTests
     [Theory]
     [MemberData(nameof(CacheValues))]
     public void UpdateExistingTest(List<(string key, string value)> data){
-        data.ForEach(i => _cache.AddOrUpdate(i.key, i.value));
+        FillCache(data);
 
         var key = data.First().key;
         var value = "roger moore";
@@ -57,7 +41,7 @@ public class LRUCacheTests
     [Theory]
     [MemberData(nameof(CacheValues))]
     public void GetExistingTest(List<(string key, string value)> data){
-        data.ForEach(i => _cache.AddOrUpdate(i.key, i.value));
+        FillCache(data);
         data.ForEach(i => {
             Assert.Equal(_cache.Get(i.key), i.value);
         });
@@ -66,7 +50,7 @@ public class LRUCacheTests
     [Theory]
     [MemberData(nameof(CacheValues))]
     public void DeleteTest(List<(string key, string value)> data){
-        data.ForEach(i => _cache.AddOrUpdate(i.key, i.value));
+        FillCache(data);
         var toDelete = data.First().key;
         _cache.Delete(toDelete);
 
@@ -77,7 +61,7 @@ public class LRUCacheTests
     [Theory]
     [MemberData(nameof(CacheValues))]
     public void CheckMaxVolume(List<(string key, string value)> data){
-        data.ForEach(i => _cache.AddOrUpdate(i.key, i.value));
+        FillCache(data);
 
         var tail = _cache.Tail;
         if( data.Count < maxVolume ) {
