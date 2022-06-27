@@ -24,6 +24,7 @@ public class CacheWebApiTests: BaseCacheTest
         Assert.NotNull(response);
         if( response != null ){
             Assert.Equal(StatusCodes.Status200OK, response.StatusCode);
+            Assert.Equal(_cache.Head?.key, data.First().key); // should be set as first
         }
     }
 
@@ -53,6 +54,7 @@ public class CacheWebApiTests: BaseCacheTest
         Assert.NotNull(nonExistent);
         if( nonExistent != null ){
             Assert.Equal(StatusCodes.Status404NotFound, nonExistent.StatusCode);
+            Assert.Equal(data.Count(), _cache.Count);
         }
 
         var response = await _cacheController.Delete(data.First().key) as OkObjectResult;
@@ -71,7 +73,17 @@ public class CacheWebApiTests: BaseCacheTest
         Assert.NotNull(addResult);
         if( addResult != null ){
             Assert.Equal(StatusCodes.Status200OK, addResult.StatusCode);
+            Assert.Equal(_cache.Head?.key, newItem.key);
             Assert.Equal(_cache.Get(newItem.key), newItem.value);
+        }
+
+        var newValue = Guid.NewGuid().ToString();
+        var updateResult = await _cacheController.Add(newItem.key, newValue);
+        Assert.NotNull(addResult);
+        if( addResult != null ){
+            Assert.Equal(StatusCodes.Status200OK, addResult.StatusCode);
+            Assert.Equal(_cache.Head?.key, newItem.key);
+            Assert.Equal(_cache.Get(newItem.key), newValue);
         }
     }
 }
