@@ -1,5 +1,8 @@
 # Simple cache
 
+## Prerequisites
+* .Net6
+
 ## Solution break down
 * SimpleCache.Core: contains all the project business logic
 * SimpleCache.WebApi: contains the WebApi project
