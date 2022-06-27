@@ -1,3 +1,4 @@
 .vscode
+.git-credentials
 bin
 obj

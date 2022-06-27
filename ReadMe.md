@@ -29,3 +29,7 @@ and run *./run.sh* (script compiles the solution, publishes files, runs Kestrel 
         + [HttpDelete]
         + Return status codes: 404, 200
         + Deletes the item associated with the key from the cache. If the item isn't present: 404.
+
+## Project references
+* https://docs.microsoft.com/pl-pl/dotnet/ - dotnet docs
+* https://www.c-sharpcorner.com/article/fast-and-clean-o1-lru-cache-implementation/ - lru cache implementation base
