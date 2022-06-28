@@ -1,4 +1,5 @@
 # Simple cache
+Simple implementation of the [LRU cache](https://en.wikipedia.org/wiki/Least_Recently_Used) with WebApi in dotnet 6
 
 ## Prerequisites
 * .Net6
@@ -11,26 +12,26 @@
 ## Compiling & Running SimpleCache.WebApi
 Solution has been created & compiled under linux.
 To run WebApi, simply open the terminal in the solution root folder, 
-and run *./run.sh* (script compiles the solution, publishes files, runs Kestrel server, and opens browser window with webApi url).
+and run *./run.sh* (remember to *chmod + x run.sh*!) (script compiles the solution, publishes files, runs Kestrel server, and opens browser window with webApi url).
 
 ## SimpleCache.WebApi Url & Endpoints
 * Default url address for SimpleCache.WebApi is *http://localhost:5001/cache*.
 * WebApi handles following endpoints:
     - *http://localhost:5001/cache/get/{key}*: 
-        + [HttpGet]
-        + Return status codes: 404, 200
+        + **[HttpGet]**
+        + Return status codes: 200, 404
         + Gets the item associated with the key. If the item isn't present: 404.
     - *http://localhost:5001/cache/list*: 
-        + [HttpGet]
+        + **[HttpGet]**
         + Return status codes: 200
         + Gets all the items stored in the cache
     - *http://localhost:5001/cache/add/{key}/{value}*: 
-        + [HttpPost]
+        + **[HttpPost]**
         + Return status codes: 200
         + Creates new item in the cache, or updates the existing one. 
     - *http://localhost:5001/cache/delete/{key}*: 
-        + [HttpDelete]
-        + Return status codes: 404, 200
+        + **[HttpDelete]**
+        + Return status codes: 200, 404
         + Deletes the item associated with the key from the cache. If the item isn't present: 404.
 
 ## Project references
